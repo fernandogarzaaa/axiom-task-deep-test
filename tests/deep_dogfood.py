@@ -145,6 +145,16 @@ def main():
     ap.add_argument("--bin", required=True, help="path to axiom-agent-task binary")
     args = ap.parse_args()
 
+    if not os.path.exists(args.bin):
+        print(f"error: binary not found: {args.bin}", file=sys.stderr)
+        print("Build it first:", file=sys.stderr)
+        print("  git clone https://github.com/fernandogarzaaa/AXIOM-AETHER /tmp/axiom-aether",
+              file=sys.stderr)
+        print("  cargo build --release --locked --bin axiom-agent-task \\", file=sys.stderr)
+        print("      --manifest-path /tmp/axiom-aether/axiom_engine_rs/Cargo.toml",
+              file=sys.stderr)
+        return 2
+
     workdir = tempfile.mkdtemp(prefix="axiom-deep-")
     print(f"workdir: {workdir}", flush=True)
 
