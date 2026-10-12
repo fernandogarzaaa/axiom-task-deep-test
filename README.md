@@ -35,15 +35,16 @@ realistic multi-attempt agentic scenario, exercising every protocol feature.
 ## Running
 
 ```bash
-# Build the binary from AXIOM-AETHER main
-cd ~/workspace/audits/axiom-aether
-git fetch origin main && git reset --hard origin/main
-cd axiom_engine_rs
-cargo build --release --locked --bin axiom-agent-task
+# Build the binary from a fresh AXIOM-AETHER checkout (kept separate from any
+# working tree you edit in)
+git clone --depth 1 https://github.com/fernandogarzaaa/AXIOM-AETHER.git /tmp/axiom-aether
+(cd /tmp/axiom-aether/axiom_engine_rs && cargo build --release --locked --bin axiom-agent-task)
 
-# Run the harness
-python3 tests/deep_dogfood.py --bin axiom_engine_rs/target/release/axiom-agent-task
+# Run the harness from this repo's root
+python3 tests/deep_dogfood.py --bin /tmp/axiom-aether/axiom_engine_rs/target/release/axiom-agent-task
 ```
+
+POSIX only (the harness uses `select()` on pipes).
 
 Exit code 0 means all checks passed. Any failure prints the check name and
 the observed-vs-expected detail.
